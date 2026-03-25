@@ -1,8 +1,15 @@
 ﻿class Dier
 {
-    public string Naam;
-    public Dieet Dieet;
-    public Grootte Grootte;
+    public string Naam { get; private set; }
+    public Dieet Dieet { get; private set; }
+    public Grootte Grootte { get;private set; }
+
+    public Dier(string naam, Grootte grootte, Dieet dieet)
+    {
+        Naam = naam;
+        Grootte = grootte;
+        Dieet = dieet;
+    }
 }
 
 enum Dieet
@@ -12,36 +19,38 @@ enum Dieet
 }
 
 enum Grootte
-{ 
+{
     Klein = 1,
     Middel = 3,
     Groot = 5
 }
 
-/*class Program
+class Program
 {
     static void Main()
     {
-        Dier leeuw = new Dier();
-        leeuw.Naam = "Leeuw";
-        leeuw.Dieet = Dieet.Carnivoor;
-        leeuw.Grootte = Grootte.Groot;
-        Dier olifant = new Dier();
-        olifant.Naam = "Olifant";
-        olifant.Dieet = Dieet.Herbivoor;
-        olifant.Grootte = Grootte.Groot;
-        Dier zebra = new Dier();
-        zebra.Naam = "Zebra";
-        zebra.Dieet = Dieet.Herbivoor;
-        zebra.Grootte = Grootte.Klein;
-        Console.WriteLine($"Dier: {leeuw.Naam}, Dieet: {leeuw.Dieet}, Grootte: {leeuw.Grootte}");
-        Console.WriteLine($"Dier: {olifant.Naam}, Dieet: {olifant.Dieet}, Grootte: {olifant.Grootte}");
-        Console.WriteLine($"Dier: {zebra.Naam}, Dieet: {zebra.Dieet}, Grootte: {zebra.Grootte}");
+      List<Dier> dieren = new List<Dier>();
+        Dier leeuw = new Dier("Leeuw", Grootte.Groot, Dieet.Carnivoor);
+        Dier olifant = new Dier("Olifant", Grootte.Groot, Dieet.Herbivoor);
+        Dier konijn = new Dier("Konijn", Grootte.Klein, Dieet.Herbivoor);
+        Dier Aap = new Dier("Aap", Grootte.Middel, Dieet.Carnivoor);
+        Dier Tijger = new Dier("Tijger", Grootte.Groot, Dieet.Carnivoor);
+        Dier Giraf = new Dier("Giraf", Grootte.Groot, Dieet.Herbivoor);
+        Dier kalfje = new Dier("Kalfje", Grootte.Klein, Dieet.Herbivoor);
+        
+        dieren.Add(leeuw);
+        dieren.Add(olifant);
+        dieren.Add(konijn);
+        dieren.Add(Aap);
+        dieren.Add(Tijger);
+        dieren.Add(Giraf);
+        dieren.Add(kalfje);
+
     }
-} */
+}
 // dieren met zelfgemaakte eigenschappen, zoals naam, dieet en grootte. 
 
-class Program
+/*class Program
 {
     static void Main()
     {
@@ -64,11 +73,25 @@ class Program
             dieren.Add(nieuwDier);
         }
     }
-}
+}*/
 //dieren die automatisch worden gegenereerd met willekeurige eigenschappen, zoals dieet en grootte.
+
 class Wagon
 {
-    public int Capaciteit = 10;
     public List<Dier> Dieren = new List<Dier>();
+    public int Capaciteit = 10;
+    public int HuidigeCapaciteit()
+    {
+        int huidigeCapaciteit = 0;
 
+        foreach (Dier dier in Dieren)
+        {
+            huidigeCapaciteit += (int)dier.Grootte;
+        }
+
+        return huidigeCapaciteit;
+    }
 }
+
+
+
