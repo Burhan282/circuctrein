@@ -4,9 +4,9 @@
     public Dieet Dieet { get; private set; }
     public Grootte Grootte { get;private set; }
 
-    public Dier(string naam, Grootte grootte, Dieet dieet)
+    public Dier(Grootte grootte, Dieet dieet)
     {
-        Naam = naam;
+        
         Grootte = grootte;
         Dieet = dieet;
     }
@@ -30,13 +30,13 @@ class Program
     static void Main()
     {
       List<Dier> dieren = new List<Dier>();
-        Dier leeuw = new Dier("Leeuw", Grootte.Groot, Dieet.Carnivoor);
-        Dier olifant = new Dier("Olifant", Grootte.Groot, Dieet.Herbivoor);
-        Dier konijn = new Dier("Konijn", Grootte.Klein, Dieet.Herbivoor);
-        Dier Aap = new Dier("Aap", Grootte.Middel, Dieet.Carnivoor);
-        Dier Tijger = new Dier("Tijger", Grootte.Groot, Dieet.Carnivoor);
-        Dier Giraf = new Dier("Giraf", Grootte.Groot, Dieet.Herbivoor);
-        Dier kalfje = new Dier("Kalfje", Grootte.Klein, Dieet.Herbivoor);
+        Dier leeuw = new Dier(Grootte.Groot, Dieet.Carnivoor);
+        Dier olifant = new Dier(Grootte.Groot, Dieet.Herbivoor);
+        Dier konijn = new Dier(Grootte.Klein, Dieet.Herbivoor);
+        Dier Aap = new Dier(Grootte.Middel, Dieet.Carnivoor);
+        Dier Tijger = new Dier (Grootte.Groot, Dieet.Carnivoor);
+        Dier Giraf = new Dier(Grootte.Groot, Dieet.Herbivoor);
+        Dier kalfje = new Dier(Grootte.Klein, Dieet.Herbivoor);
         
         dieren.Add(leeuw);
         dieren.Add(olifant);
@@ -57,7 +57,7 @@ class Program
         Random random = new Random();
         Grootte[] groottes = (Grootte[])Enum.GetValues(typeof(Grootte));
         Dieet[] diëten = (Dieet[])Enum.GetValues(typeof(Dieet));
-
+ 
         List<Dier> dieren = new List<Dier>();
         Dier dier = new Dier();
         Dier Naam = new Dier();
