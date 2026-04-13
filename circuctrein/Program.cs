@@ -5,9 +5,11 @@ public class Animal
 {
     public Diet Diet { get; private set; }
     public AnimalSize Size { get; private set; }
+    public string Name { get; private set; }
 
-    public Animal(AnimalSize size, Diet diet)
+    public Animal(string name, AnimalSize size, Diet diet)
     {
+        Name = name;
         Size = size;
         Diet = diet;
     }
@@ -30,18 +32,6 @@ public class Wagon
 {
     public List<Animal> Animals = new List<Animal>();
     public int Capacity = 10;
-
-    public int CurrentCapacity()
-    {
-        int total = 0;
-
-        foreach (Animal animal in Animals)
-        {
-            total += (int)animal.Size;
-        }
-
-        return total;
-    }
 
     public bool CanAddAnimal(Animal newAnimal)
     {
@@ -67,35 +57,37 @@ public class Wagon
 
         return true;
     }
+
+    public int CurrentCapacity()
+    {
+        int total = 0;
+
+        foreach (Animal animal in Animals)
+        {
+            total += (int)animal.Size;
+        }
+
+        return total;
+    }
 }
 
 public class Program
 {
+    static Random random = new Random();
+
     static void Main()
     {
-        List<Animal> animals = new List<Animal>();
+        List<Animal> animals = CreateAnimals();
 
-        Animal lion = new Animal(AnimalSize.Large, Diet.Carnivore);
-        Animal elephant = new Animal(AnimalSize.Large, Diet.Herbivore);
-        Animal rabbit = new Animal(AnimalSize.Small, Diet.Herbivore);
-        Animal monkey = new Animal(AnimalSize.Medium, Diet.Carnivore);
-        Animal tiger = new Animal(AnimalSize.Large, Diet.Carnivore);
-        Animal giraffe = new Animal(AnimalSize.Large, Diet.Herbivore);
-        Animal calf = new Animal(AnimalSize.Small, Diet.Herbivore);
-
-        animals.Add(lion);
-        animals.Add(elephant);
-        animals.Add(rabbit);
-        animals.Add(monkey);
-        animals.Add(tiger);
-        animals.Add(giraffe);
-        animals.Add(calf);
+        ShuffleAnimals(animals);
 
         List<Wagon> wagons = new List<Wagon>();
 
         foreach (Animal animal in animals)
         {
             bool placed = false;
+
+            ShuffleWagons(wagons);
 
             foreach (Wagon wagon in wagons)
             {
@@ -115,6 +107,51 @@ public class Program
             }
         }
 
+        PrintTrain(wagons);
+    }
+
+    static List<Animal> CreateAnimals()
+    {
+        return new List<Animal>
+        {
+            new Animal("Lion", AnimalSize.Large, Diet.Carnivore),
+            new Animal("Elephant", AnimalSize.Large, Diet.Herbivore),
+            new Animal("Rabbit", AnimalSize.Small, Diet.Herbivore),
+            new Animal("Monkey", AnimalSize.Medium, Diet.Carnivore),
+            new Animal("Tiger", AnimalSize.Large, Diet.Carnivore),
+            new Animal("Giraffe", AnimalSize.Large, Diet.Herbivore),
+            new Animal("Calf", AnimalSize.Small, Diet.Herbivore),
+            new Animal("Zebra", AnimalSize.Medium, Diet.Herbivore),
+            new Animal("Goat", AnimalSize.Small, Diet.Herbivore)
+        };
+    }
+
+    static void ShuffleAnimals(List<Animal> animals)
+    {
+        for (int i = animals.Count - 1; i > 0; i--)
+        {
+            int j = random.Next(i + 1);
+
+            Animal temp = animals[i];
+            animals[i] = animals[j];
+            animals[j] = temp;
+        }
+    }
+
+    static void ShuffleWagons(List<Wagon> wagons)
+    {
+        for (int i = wagons.Count - 1; i > 0; i--)
+        {
+            int j = random.Next(i + 1);
+
+            Wagon temp = wagons[i];
+            wagons[i] = wagons[j];
+            wagons[j] = temp;
+        }
+    }
+
+    static void PrintTrain(List<Wagon> wagons)
+    {
         int wagonNumber = 1;
 
         foreach (Wagon wagon in wagons)
@@ -127,7 +164,7 @@ public class Program
 
             foreach (Animal animal in wagon.Animals)
             {
-                Console.WriteLine($"- {animal.Diet} {animal.Size}");
+                Console.WriteLine($"- {animal.Name} ({animal.Diet}, {animal.Size})");
             }
 
             Console.WriteLine();
