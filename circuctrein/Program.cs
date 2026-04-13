@@ -1,97 +1,165 @@
-﻿class Dier
-{
-    public string Naam { get; private set; }
-    public Dieet Dieet { get; private set; }
-    public Grootte Grootte { get;private set; }
+﻿using System;
+using System.Collections.Generic;
 
-    public Dier(Grootte grootte, Dieet dieet)
+class Animal
+{
+    public Diet Diet { get; private set; }
+    public Size Size { get; private set; }
+
+    public Animal(Size size, Diet diet)
     {
-        
-        Grootte = grootte;
-        Dieet = dieet;
+        Size = size;
+        Diet = diet;
     }
 }
 
-enum Dieet
+enum Diet
 {
-    Carnivoor,
-    Herbivoor
+    Carnivore,
+    Herbivore
 }
 
-enum Grootte
+enum Size
 {
-    Klein = 1,
-    Middel = 3,
-    Groot = 5
+    Small = 1,
+    Medium = 3,
+    Large = 5
+}
+
+class Wagon
+{
+    public List<Animal> Animals = new List<Animal>();
+    public int Capacity = 10;
+
+    public int CurrentCapacity()
+    {
+        int total = 0;
+
+        foreach (Animal animal in Animals)
+        {
+            total += (int)animal.Size;
+        }
+
+        return total;
+    }
+
+    public bool CanAddAnimal(Animal newAnimal)
+    {
+        if (CurrentCapacity() + (int)newAnimal.Size > Capacity)
+        {
+            return false;
+        }
+
+        foreach (Animal existingAnimal in Animals)
+        {
+            if (newAnimal.Diet == Diet.Carnivore &&
+                newAnimal.Size >= existingAnimal.Size)
+            {
+                return false;
+            }
+
+            if (existingAnimal.Diet == Diet.Carnivore &&
+                existingAnimal.Size >= newAnimal.Size)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
 
 class Program
 {
     static void Main()
     {
-      List<Dier> dieren = new List<Dier>();
-        Dier leeuw = new Dier(Grootte.Groot, Dieet.Carnivoor);
-        Dier olifant = new Dier(Grootte.Groot, Dieet.Herbivoor);
-        Dier konijn = new Dier(Grootte.Klein, Dieet.Herbivoor);
-        Dier Aap = new Dier(Grootte.Middel, Dieet.Carnivoor);
-        Dier Tijger = new Dier (Grootte.Groot, Dieet.Carnivoor);
-        Dier Giraf = new Dier(Grootte.Groot, Dieet.Herbivoor);
-        Dier kalfje = new Dier(Grootte.Klein, Dieet.Herbivoor);
-        
-        dieren.Add(leeuw);
-        dieren.Add(olifant);
-        dieren.Add(konijn);
-        dieren.Add(Aap);
-        dieren.Add(Tijger);
-        dieren.Add(Giraf);
-        dieren.Add(kalfje);
+        List<Animal> animals = new List<Animal>();
 
-    }
-}
-// dieren met zelfgemaakte eigenschappen, zoals naam, dieet en grootte. 
+        Animal lion = new Animal(Size.Large, Diet.Carnivore);
+        Animal elephant = new Animal(Size.Large, Diet.Herbivore);
+        Animal rabbit = new Animal(Size.Small, Diet.Herbivore);
+        Animal monkey = new Animal(Size.Medium, Diet.Carnivore);
+        Animal tiger = new Animal(Size.Large, Diet.Carnivore);
+        Animal giraffe = new Animal(Size.Large, Diet.Herbivore);
+        Animal calf = new Animal(Size.Small, Diet.Herbivore);
 
-/*class Program
-{
-    static void Main()
-    {
-        Random random = new Random();
-        Grootte[] groottes = (Grootte[])Enum.GetValues(typeof(Grootte));
-        Dieet[] diëten = (Dieet[])Enum.GetValues(typeof(Dieet));
- 
-        List<Dier> dieren = new List<Dier>();
-        Dier dier = new Dier();
-        Dier Naam = new Dier();
-        dier.Dieet = diëten[random.Next(diëten.Length)];
-        dier.Grootte = groottes[random.Next(groottes.Length)];
-        dieren.Add(dier);
+        animals.Add(lion);
+        animals.Add(elephant);
+        animals.Add(rabbit);
+        animals.Add(monkey);
+        animals.Add(tiger);
+        animals.Add(giraffe);
+        animals.Add(calf);
 
-        for (int i = 0; i < 10; i++)
+        List<Wagon> wagons = new List<Wagon>();
+
+        foreach (Animal animal in animals)
         {
-            Dier nieuwDier = new Dier();
-            nieuwDier.Dieet = diëten[random.Next(diëten.Length)];
-            nieuwDier.Grootte = groottes[random.Next(groottes.Length)];
-            dieren.Add(nieuwDier);
-        }
-    }
-}*/
-//dieren die automatisch worden gegenereerd met willekeurige eigenschappen, zoals dieet en grootte.
+            bool placed = false;
 
-class Wagon
-{
-    public List<Dier> Dieren = new List<Dier>();
-    public int Capaciteit = 10;
-    public int HuidigeCapaciteit()
-    {
-        int huidigeCapaciteit = 0;
+            foreach (Wagon wagon in wagons)
+            {
+                if (wagon.CanAddAnimal(animal))
+                {
+                    wagon.Animals.Add(animal);
+                    placed = true;
+                    break;
+                }
+            }
 
-        foreach (Dier dier in Dieren)
-        {
-            huidigeCapaciteit += (int)dier.Grootte;
+            if (!placed)
+            {
+                Wagon newWagon = new Wagon();
+                newWagon.Animals.Add(animal);
+                wagons.Add(newWagon);
+            }
         }
 
-        return huidigeCapaciteit;
+        int wagonNumber = 1;
+
+        foreach (Wagon wagon in wagons)
+        {
+            int currentCapacity = wagon.CurrentCapacity();
+
+            Console.Write($"Wagon {wagonNumber}: ");
+            PrintBar(currentCapacity, wagon.Capacity);
+            Console.WriteLine($" {currentCapacity}/{wagon.Capacity}");
+
+            foreach (Animal animal in wagon.Animals)
+            {
+                Console.WriteLine($"- {animal.Diet} {animal.Size}");
+            }
+
+            Console.WriteLine();
+            wagonNumber++;
+        }
+    }
+
+    static void PrintBar(int current, int max)
+    {
+        int filled = current;
+        int empty = max - current;
+
+        if (current <= 5)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+        }
+        else if (current <= 7)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+        }
+        else
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+        }
+
+        Console.Write("[");
+        Console.Write(new string('█', filled));
+
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        Console.Write(new string('░', empty));
+
+        Console.ResetColor();
+        Console.Write("]");
     }
 }
-
-
-
