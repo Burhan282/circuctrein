@@ -1,32 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 
-class Animal
+public class Animal
 {
     public Diet Diet { get; private set; }
-    public Size Size { get; private set; }
+    public AnimalSize Size { get; private set; }
 
-    public Animal(Size size, Diet diet)
+    public Animal(AnimalSize size, Diet diet)
     {
         Size = size;
         Diet = diet;
     }
 }
 
-enum Diet
+public enum Diet
 {
     Carnivore,
     Herbivore
 }
 
-enum Size
+public enum AnimalSize
 {
     Small = 1,
     Medium = 3,
     Large = 5
 }
 
-class Wagon
+public class Wagon
 {
     public List<Animal> Animals = new List<Animal>();
     public int Capacity = 10;
@@ -69,19 +69,19 @@ class Wagon
     }
 }
 
-class Program
+public class Program
 {
     static void Main()
     {
         List<Animal> animals = new List<Animal>();
 
-        Animal lion = new Animal(Size.Large, Diet.Carnivore);
-        Animal elephant = new Animal(Size.Large, Diet.Herbivore);
-        Animal rabbit = new Animal(Size.Small, Diet.Herbivore);
-        Animal monkey = new Animal(Size.Medium, Diet.Carnivore);
-        Animal tiger = new Animal(Size.Large, Diet.Carnivore);
-        Animal giraffe = new Animal(Size.Large, Diet.Herbivore);
-        Animal calf = new Animal(Size.Small, Diet.Herbivore);
+        Animal lion = new Animal(AnimalSize.Large, Diet.Carnivore);
+        Animal elephant = new Animal(AnimalSize.Large, Diet.Herbivore);
+        Animal rabbit = new Animal(AnimalSize.Small, Diet.Herbivore);
+        Animal monkey = new Animal(AnimalSize.Medium, Diet.Carnivore);
+        Animal tiger = new Animal(AnimalSize.Large, Diet.Carnivore);
+        Animal giraffe = new Animal(AnimalSize.Large, Diet.Herbivore);
+        Animal calf = new Animal(AnimalSize.Small, Diet.Herbivore);
 
         animals.Add(lion);
         animals.Add(elephant);
