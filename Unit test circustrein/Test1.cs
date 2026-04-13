@@ -6,48 +6,52 @@ public class WagonTests
     [TestMethod]
     public void CurrentCapacity_ReturnsCorrectValue()
     {
-        // Arrange
         Wagon wagon = new Wagon();
-        wagon.Animals.Add(new Animal(AnimalSize.Small, Diet.Herbivore)); // 1
-        wagon.Animals.Add(new Animal(AnimalSize.Medium, Diet.Herbivore)); // 3
+        wagon.Animals.Add(new Animal("Rabbit", AnimalSize.Small, Diet.Herbivore));
+        wagon.Animals.Add(new Animal("Zebra", AnimalSize.Medium, Diet.Herbivore));
 
-        // Act
         int result = wagon.CurrentCapacity();
 
-        // Assert
         Assert.AreEqual(4, result);
     }
 
     [TestMethod]
     public void CanAddAnimal_ReturnsFalse_WhenCapacityExceeded()
     {
-        // Arrange
         Wagon wagon = new Wagon();
-        wagon.Animals.Add(new Animal(AnimalSize.Large, Diet.Herbivore)); // 5
-        wagon.Animals.Add(new Animal(AnimalSize.Large, Diet.Herbivore)); // 5
+        wagon.Animals.Add(new Animal("Elephant", AnimalSize.Large, Diet.Herbivore));
+        wagon.Animals.Add(new Animal("Giraffe", AnimalSize.Large, Diet.Herbivore));
 
-        Animal rabbit = new Animal(AnimalSize.Small, Diet.Herbivore); // +1 = 11
+        Animal rabbit = new Animal("Rabbit", AnimalSize.Small, Diet.Herbivore);
 
-        // Act
         bool result = wagon.CanAddAnimal(rabbit);
 
-        // Assert
         Assert.IsFalse(result);
     }
 
     [TestMethod]
-    public void CanAddAnimal_ReturnsFalse_WhenCarnivoreEatsHerbivore()
+    public void CanAddAnimal_ReturnsFalse_WhenCarnivoreCanEatAnimal()
     {
-        // Arrange
         Wagon wagon = new Wagon();
-        wagon.Animals.Add(new Animal(AnimalSize.Small, Diet.Herbivore));
+        wagon.Animals.Add(new Animal("Rabbit", AnimalSize.Small, Diet.Herbivore));
 
-        Animal carnivore = new Animal(AnimalSize.Small, Diet.Carnivore);
+        Animal fox = new Animal("Fox", AnimalSize.Small, Diet.Carnivore);
 
-        // Act
-        bool result = wagon.CanAddAnimal(carnivore);
+        bool result = wagon.CanAddAnimal(fox);
 
-        // Assert
         Assert.IsFalse(result);
+    }
+
+    [TestMethod]
+    public void CanAddAnimal_ReturnsTrue_WhenAnimalsAreSafe()
+    {
+        Wagon wagon = new Wagon();
+        wagon.Animals.Add(new Animal("Elephant", AnimalSize.Large, Diet.Herbivore));
+
+        Animal goat = new Animal("Goat", AnimalSize.Small, Diet.Herbivore);
+
+        bool result = wagon.CanAddAnimal(goat);
+
+        Assert.IsTrue(result);
     }
 }
