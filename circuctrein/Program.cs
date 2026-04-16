@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 public class Animal
 {
     public Diet Diet { get; private set; }
@@ -137,7 +135,7 @@ public class Program
             animals[j] = temp;
         }
     }
-
+    
     static void ShuffleWagons(List<Wagon> wagons)
     {
         for (int i = wagons.Count - 1; i > 0; i--)
@@ -149,7 +147,7 @@ public class Program
             wagons[j] = temp;
         }
     }
-
+    // hulp met ai hierboven
     static void PrintTrain(List<Wagon> wagons)
     {
         int wagonNumber = 1;
@@ -171,7 +169,7 @@ public class Program
             wagonNumber++;
         }
     }
-
+    //ai hulp
     static void PrintBar(int current, int max)
     {
         int filled = current;
